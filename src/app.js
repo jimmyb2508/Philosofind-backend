@@ -1,13 +1,19 @@
 const express = require('express');
 
-const quoteControllers = require('./controllers/quotes');
+const thinkerControllers = require('./controllers/thinkers');
 
 const app = express();
 
 app.use(express.json());
 
-app.post('/quote', quoteControllers.create);
+app.post('/thinkers', thinkerControllers.create);
 
-app.get('/quote', quoteControllers.list);
+app.get('/thinkers', thinkerControllers.list);
+
+app.get('/thinkers/:thinkerId', thinkerControllers.find);
+
+app.patch('/thinkers/:thinkerId', thinkerControllers.patch);
+
+app.delete('/thinkers/:thinkerId', thinkerControllers.delete);
 
 module.exports = app;
