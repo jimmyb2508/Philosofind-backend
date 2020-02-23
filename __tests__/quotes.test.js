@@ -1,9 +1,12 @@
 const request = require('supertest');
 const mongoose = require('mongoose');
 const app = require('../src/app');
+const Quote = require('../src/models/quote');
 const Thinker = require('../src/models/thinker');
 
-describe('/thinker', () => {
+describe('/quotes', () => {
+  let thinker;
+
   beforeAll(done => {
     const url = process.env.DATABASE_CONN;
     mongoose.connect(url, {
@@ -13,145 +16,102 @@ describe('/thinker', () => {
     done();
   });
 
+  beforeEach(done => {
+    Thinker.create(
+      {
+        name: 'Albert Einstein',
+        discipline: 'Physicist',
+      },
+      (_, document) => {
+        thinker = document;
+        done();
+      },
+    );
+  });
+
   afterEach(done => {
     Thinker.deleteMany({}, () => {
-      done();
+      Quote.deleteMany({}, () => {
+        done();
+      });
     });
   });
 
   afterAll(done => {
+    mongoose.connection.db.dropDatabase();
     mongoose.connection.close();
     done();
   });
 
-  describe('POST /thinkers', () => {
-    it('creates a new thinker in the database', done => {
+  describe('POST /thinkers/:thinkerId/quotes', () => {
+    it('creates a new quote for a given thinker', done => {
       request(app)
-        .post('/thinkers')
+        .post(`/thinkers/${thinker._id}/quotes`)
         .send({
-          name: 'Prof. Stephen Hawking',
-          discipline: 'Physics',
+          quote:
+            'Insanity: doing the same thing over and over again and expecting different results.',
+          mood: 1,
         })
         .then(res => {
           expect(res.status).toBe(201);
-          Thinker.findById(res.body._id, (_, thinker) => {
-            expect(thinker.name).toBe('Prof. Stephen Hawking');
-            expect(thinker.discipline).toBe('Physics');
+
+          Quote.findById(res.body._id, (err, quote) => {
+            expect(err).toBe(null);
+            expect(quote.quote).toBe(
+              'Insanity: doing the same thing over and over again and expecting different results.',
+            );
+            expect(quote.mood).toBe(1);
+            expect(quote.thinker).toEqual(thinker._id);
+            done();
+          });
+        });
+    });
+
+    it('returns a 404 and does not create a quote if the thinker does not exist', done => {
+      request(app)
+        .post('/thinkers/1234/quotes')
+        .send({
+          quote:
+            'Insanity: doing the same thing over and over again and expecting different results.',
+          mood: 1,
+        })
+        .then(res => {
+          expect(res.status).toBe(404);
+          expect(res.body.error).toBe('This thinker could not be found.');
+
+          Quote.find({}, (err, quotes) => {
+            expect(err).toBe(null);
+            expect(quotes.length).toBe(0);
             done();
           });
         });
     });
   });
 
-  describe('retrieve thinkers in the database', () => {
-    let thinkers;
+  describe('with quotes in the database', () => {
+    let quotes;
     beforeEach(done => {
       Promise.all([
-        Thinker.create({
-          name: 'Albert Einstein',
-          discipline: 'Physics',
-        }),
-        Thinker.create({
-          name: 'Prof. Brian Cox',
-          discipline: 'Physics',
-        }),
-        Thinker.create({
-          name: 'Dr. Carl Sagan',
-          discipline: 'Physics',
-        }),
-      ]).then(documents => {
-        thinkers = documents;
+        Quote.create({
+          quote: 'In the middle of difficulty lies opportunity.',
+          mood: 1 })]).then(documents => {
+        quotes = documents;
         done();
       });
     });
 
-    describe('GET /thinkers', () => {
+    describe('GET /quotes', () => {
       it('gets all quotes', done => {
         request(app)
-          .get('/thinkers')
+          .get('/quotes')
           .then(res => {
+            console.log(res.body);
             expect(res.status).toBe(200);
-            // console.log(res);
-            expect(res.body.length).toBe(3);
-
-            res.body.forEach(thinker => {
-              // console.log(thinkers);
-              // console.log(thinker);
-              // console.log(thinker._id);
-              const expected = thinkers.find(a => a._id.toString() === thinker._id);
-              expect(thinker.name).toBe(expected.name);
-              expect(thinker.genre).toBe(expected.genre);
-            });
-            done();
+            // expect(res.body.length).toBe(1);
+            // // expect(res.body.quote).toBe(quotes.quote);
+            // // expect(res.body.mood).toBe(quotes.mood);
           });
-      });
-    });
-
-    describe('GET /thinkers/:thinkerId', () => {
-      it('gets thinker by id', done => {
-        const thinker = thinkers[0];
-        request(app)
-          .get(`/thinkers/${thinker._id}`)
-          .then(res => {
-            expect(res.status).toBe(200);
-            // console.log(res);
-            expect(res.body.name).toBe(thinker.name);
-            expect(res.body.discipline).toBe(thinker.discipline);
-            done();
-          });
-      });
-    });
-
-    it('returns a 404 if the thinker does not exist', done => {
-      request(app)
-        .get('/thinkers/12345')
-        .then(res => {
-          expect(res.status).toBe(404);
-          expect(res.body.error).toBe('The thinker could not be found.');
-          done();
-        });
-    });
-
-    describe('PATCH /thinkers/:thinkerId', () => {
-      it('updates thinkers discipline by id', done => {
-        const thinker = thinkers[0];
-        request(app)
-          .patch(`/thinkers/${thinker._id}`)
-          .send({ discipline: 'Astrophysicist' })
-          .then(res => {
-            expect(res.status).toBe(200);
-            Thinker.findById(thinker._id, (_, updatedThinker) => {
-              expect(updatedThinker.discipline).toBe('Astrophysicist');
-              done();
-            });
-          });
-      });
-
-      it('returns a 404 if the thinker does not exist', done => {
-        request(app)
-          .patch('/thinkers/12345')
-          .send({ discipline: 'Astrophysicist' })
-          .then(res => {
-            expect(res.status).toBe(404);
-            expect(res.body.error).toBe('The thinker could not be found.');
-            done();
-          });
-      });
-    });
-
-    describe('DELETE /thinkers/:thinkersId', () => {
-      it('deletes thinkers record by id', done => {
-        const thinker = thinkers[0];
-        request(app)
-          .delete(`/thinkers/${thinker._id}`)
-          .then(res => {
-            expect(res.status).toBe(204);
-            Thinker.findById(thinker._id, (error, updatedThinker) => {
-              expect(error).toBe(null);
-              expect(updatedThinker).toBe(null);
-              done();
-            });
-          });
+        done();
       });
     });
   });
