@@ -6,6 +6,8 @@ const app = express();
 
 app.use(express.json());
 
+app.use(express.cors());
+
 app.post('/quotes', quoteControllers.create);
 
 app.get('/quotes', quoteControllers.list);

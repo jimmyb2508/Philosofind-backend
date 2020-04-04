@@ -96,7 +96,7 @@ describe('/quotes', () => {
           .get(`/quotes/random`)
           .then(res => {
             expect(res.status).toBe(200);
-            console.log(res.body);
+            console.log(res);
             expect(res.body.quote).toBe(quote.quote);
             expect(res.body.author).toBe(quote.author);
             expect(res.body.category).toBe(quote.category);
