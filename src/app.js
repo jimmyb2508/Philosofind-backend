@@ -10,6 +10,11 @@ const quoteControllers = require('./controllers/quote');
 
 app.use(express.json());
 
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  next();
+});
+
 app.post('/quotes', quoteControllers.create);
 
 app.get('/quotes', quoteControllers.list);
