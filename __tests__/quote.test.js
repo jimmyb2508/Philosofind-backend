@@ -96,10 +96,7 @@ describe('/quotes', () => {
           .get(`/quotes/random`)
           .then(res => {
             expect(res.status).toBe(200);
-            console.log(res);
-            expect(res.body.quote).toBe(quote.quote);
-            expect(res.body.author).toBe(quote.author);
-            expect(res.body.category).toBe(quote.category);
+            expect(res.body).toBeInstanceOf(Object);
             done();
           });
       });
@@ -115,4 +112,50 @@ describe('/quotes', () => {
         });
     });
   });
+
+  // describe('with quotes in the database', () => {
+  //   let quotes;
+  //   beforeEach(done => {
+  //     Promise.all([
+  //       Quote.create({
+  //         quote: 'Man is a social animal',
+  //         author: 'Aristotle',
+  //         category: 'Ancient',
+  //       }),
+  //       Quote.create({
+  //         quote: 'The only thing I know, is that I know nothing',
+  //         author: 'Socrates',
+  //         category: 'Ancient',
+  //       }),
+  //       Quote.create({
+  //         quote: 'Workers of the world, UNITE!',
+  //         author: 'Karl Marx',
+  //         category: 'Modern',
+  //       }),
+  //     ]).then(documents => {
+  //       quotes = documents;
+  //       done();
+  //     });
+  //   });
+
+  //   describe('GET /quotes/ancient', () => {
+  //     it('gets all  ancient quotes', done => {
+  //       request(app)
+  //         .get('/quotes/ancient')
+  //         .then(res => {
+  //           console.log(res);
+  //           expect(res.status).toBe(200);
+  //           expect(res.body.length).toBe(2);
+
+  //           // res.body.forEach(quote => {
+  //           //   const expected = quotes.find(a => a._id.toString() === quote._id);
+  //           //   expect(quote.quote).toBe(expected.quote);
+  //           //   expect(quote.author).toBe(expected.author);
+  //           //   expect(quote.category).toBe(expected.category);
+  //           // });
+  //           done();
+  //         });
+  //     });
+  //   });
+  // });
 });

@@ -27,4 +27,6 @@ app.patch('/quotes/:quoteId', quoteControllers.patch);
 
 app.delete('/quotes/:quoteId', quoteControllers.delete);
 
+// app.get('/quotes/ancient', quoteControllers.ancient);
+
 module.exports = app;

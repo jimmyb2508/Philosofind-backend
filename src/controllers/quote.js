@@ -35,7 +35,7 @@ exports.random = (req, res) => {
 exports.find = (req, res) => {
   Quote.findOne({ _id: req.params.quoteId }, (err, quote) => {
     if (!quote) {
-      res.status(404).json({ error: 'The quote could not be found.' });
+      res.status(404).json({ error: 'The quote could not be found' });
     } else {
       res.status(200).json(quote);
     }
@@ -45,7 +45,7 @@ exports.find = (req, res) => {
 exports.patch = (req, res) => {
   Quote.findOne({ _id: req.params.quoteId }, (err, quote) => {
     if (!quote) {
-      res.status(404).json({ error: 'The author could not be found.' });
+      res.status(404).json({ error: 'The author could not be found!' });
     } else {
       if (req.body.quote) {
         quote.set({ name: req.body.quote });
@@ -69,3 +69,13 @@ exports.delete = (req, res) => {
     }
   });
 };
+
+// exports.ancient = (req, res) => {
+//   Quote.findAll({ category: req.body.category }, (err, quote) => {
+//     if(!quote) {
+//       res.status(404).json({ error: 'The quote could not be found..' });
+//     } else {
+//       res.status(200).json(quote)
+//     }
+//   })
+// };
