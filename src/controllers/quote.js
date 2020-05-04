@@ -35,7 +35,7 @@ exports.random = (req, res) => {
 exports.find = (req, res) => {
   Quote.findOne({ _id: req.params.quoteId }, (err, quote) => {
     if (!quote) {
-      res.status(404).json({ error: 'The quote could not be found' });
+      res.status(404).json({ error: 'The quote could not be found!!!' });
     } else {
       res.status(200).json(quote);
     }
@@ -70,12 +70,62 @@ exports.delete = (req, res) => {
   });
 };
 
-// exports.ancient = (req, res) => {
-//   Quote.findAll({ category: req.body.category }, (err, quote) => {
-//     if(!quote) {
-//       res.status(404).json({ error: 'The quote could not be found..' });
-//     } else {
-//       res.status(200).json(quote)
-//     }
-//   })
-// };
+exports.ancient = (req, res) => {
+  Quote.find({ category: 'Ancient' }, (err, quote) => {
+    if(!quote) {
+      res.status(404).json({ error: 'The quote could not be found..' });
+    } else {
+      res.status(200).json(quote)
+    }
+  })
+};
+
+exports.enlightenment = (req, res) => {
+  Quote.find({ category: 'Enlightenment' }, (err, quote) => {
+    if(!quote) {
+      res.status(404).json({ error: 'The quote could not be found..' });
+    } else {
+      res.status(200).json(quote)
+    }
+  })
+};
+
+exports.modern = (req, res) => {
+  Quote.find({ category: 'Modern' }, (err, quote) => {
+    if(!quote) {
+      res.status(404).json({ error: 'The quote could not be found..' });
+    } else {
+      res.status(200).json(quote)
+    }
+  })
+};
+
+exports.artists = (req, res) => {
+  Quote.find({ category: 'Artists' }, (err, quote) => {
+    if(!quote) {
+      res.status(404).json({ error: 'The quote could not be found..' });
+    } else {
+      res.status(200).json(quote)
+    }
+  })
+};
+
+exports.entrepreneurs = (req, res) => {
+  Quote.find({ category: 'Entrepreneurs' }, (err, quote) => {
+    if(!quote) {
+      res.status(404).json({ error: 'The quote could not be found..' });
+    } else {
+      res.status(200).json(quote)
+    }
+  })
+};
+
+exports.scientists = (req, res) => {
+  Quote.find({ category: 'Scientists' }, (err, quote) => {
+    if(!quote) {
+      res.status(404).json({ error: 'The quote could not be found..' });
+    } else {
+      res.status(200).json(quote)
+    }
+  })
+};

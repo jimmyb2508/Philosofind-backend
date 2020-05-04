@@ -21,12 +21,22 @@ app.get('/quotes', quoteControllers.list);
 
 app.get('/quotes/random', quoteControllers.random);
 
-app.get('/quotes/:quoteId', quoteControllers.find);
+// app.get('/quotes/:quoteId', quoteControllers.find);
 
 app.patch('/quotes/:quoteId', quoteControllers.patch);
 
 app.delete('/quotes/:quoteId', quoteControllers.delete);
 
-// app.get('/quotes/ancient', quoteControllers.ancient);
+app.get('/quotes/ancient', quoteControllers.ancient);
+
+app.get('/quotes/enlightenment', quoteControllers.enlightenment);
+
+app.get('/quotes/modern', quoteControllers.modern);
+
+app.get('/quotes/artists', quoteControllers.artists);
+
+app.get('/quotes/entrepreneurs', quoteControllers.entrepreneurs);
+
+app.get('/quotes/scientists', quoteControllers.scientists);
 
 module.exports = app;
