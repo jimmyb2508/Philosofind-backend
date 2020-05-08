@@ -154,3 +154,24 @@ exports.randommodern = (req, res) => {
     res.status(200).json(quote[rand]);
   });
 };
+
+exports.randomartists = (req, res) => {
+  Quote.find({ category: 'Artists' }, (err, quote) => {
+    const rand = Math.floor(Math.random() * quote.length);
+    res.status(200).json(quote[rand]);
+  });
+};
+
+exports.randomentrepreneurs = (req, res) => {
+  Quote.find({ category: 'Entrepreneurs' }, (err, quote) => {
+    const rand = Math.floor(Math.random() * quote.length);
+    res.status(200).json(quote[rand]);
+  });
+};
+
+exports.randomscientists = (req, res) => {
+  Quote.find({ category: 'Scientists' }, (err, quote) => {
+    const rand = Math.floor(Math.random() * quote.length);
+    res.status(200).json(quote[rand]);
+  });
+};
