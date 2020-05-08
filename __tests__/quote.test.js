@@ -298,7 +298,8 @@ describe('/quotes', () => {
     beforeEach(done => {
       Promise.all([
         Quote.create({
-          quote: 'It’s fine to celebrate success but it is more important to heed the lessons of failure.',
+          quote:
+            'It’s fine to celebrate success but it is more important to heed the lessons of failure.',
           author: 'Bill Gates',
           category: 'Entrepreneurs',
         }),
@@ -377,6 +378,43 @@ describe('/quotes', () => {
               // expect(quote.author).toBe(expected.author);
               expect(quote.category).toBe(expected.category);
             });
+            done();
+          });
+      });
+    });
+  });
+
+  describe('gets a random ancient quote from the database', () => {
+    let quotes;
+    beforeEach(done => {
+      Promise.all([
+        Quote.create({
+          quote: 'Man is a social animal',
+          author: 'Aristotle',
+          category: 'Ancient',
+        }),
+        Quote.create({
+          quote: 'The only thing I know, is that I know nothing',
+          author: 'Socrates',
+          category: 'Ancient',
+        }),
+        Quote.create({
+          quote: 'Workers of the world, UNITE!',
+          author: 'Karl Marx',
+          category: 'Modern',
+        }),
+      ]).then(documents => {
+        quotes = documents;
+        done();
+      });
+    });
+
+    describe('GET /quotes/ancient/random', () => {
+      it('gets all ancient quotes', done => {
+        request(app)
+          .get('/quotes/ancient/random')
+          .then(res => {
+            expect(res.body).toBeInstanceOf(Object);
             done();
           });
       });

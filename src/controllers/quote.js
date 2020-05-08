@@ -70,62 +70,87 @@ exports.delete = (req, res) => {
   });
 };
 
+/* Gets all quotes from a category */
+
 exports.ancient = (req, res) => {
   Quote.find({ category: 'Ancient' }, (err, quote) => {
-    if(!quote) {
+    if (!quote) {
       res.status(404).json({ error: 'The quote could not be found..' });
     } else {
-      res.status(200).json(quote)
+      res.status(200).json(quote);
     }
-  })
+  });
 };
 
 exports.enlightenment = (req, res) => {
   Quote.find({ category: 'Enlightenment' }, (err, quote) => {
-    if(!quote) {
+    if (!quote) {
       res.status(404).json({ error: 'The quote could not be found..' });
     } else {
-      res.status(200).json(quote)
+      res.status(200).json(quote);
     }
-  })
+  });
 };
 
 exports.modern = (req, res) => {
   Quote.find({ category: 'Modern' }, (err, quote) => {
-    if(!quote) {
+    if (!quote) {
       res.status(404).json({ error: 'The quote could not be found..' });
     } else {
-      res.status(200).json(quote)
+      res.status(200).json(quote);
     }
-  })
+  });
 };
 
 exports.artists = (req, res) => {
   Quote.find({ category: 'Artists' }, (err, quote) => {
-    if(!quote) {
+    if (!quote) {
       res.status(404).json({ error: 'The quote could not be found..' });
     } else {
-      res.status(200).json(quote)
+      res.status(200).json(quote);
     }
-  })
+  });
 };
 
 exports.entrepreneurs = (req, res) => {
   Quote.find({ category: 'Entrepreneurs' }, (err, quote) => {
-    if(!quote) {
+    if (!quote) {
       res.status(404).json({ error: 'The quote could not be found..' });
     } else {
-      res.status(200).json(quote)
+      res.status(200).json(quote);
     }
-  })
+  });
 };
 
 exports.scientists = (req, res) => {
   Quote.find({ category: 'Scientists' }, (err, quote) => {
-    if(!quote) {
+    if (!quote) {
       res.status(404).json({ error: 'The quote could not be found..' });
     } else {
-      res.status(200).json(quote)
+      res.status(200).json(quote);
     }
-  })
+  });
+};
+
+/* Gets random quote from a category */
+
+exports.randomancient = (req, res) => {
+  Quote.find({ category: 'Ancient' }, (err, quote) => {
+    const rand = Math.floor(Math.random() * quote.length);
+    res.status(200).json(quote[rand]);
+  });
+};
+
+exports.randomenlightenment = (req, res) => {
+  Quote.find({ category: 'Enlightenment' }, (err, quote) => {
+    const rand = Math.floor(Math.random() * quote.length);
+    res.status(200).json(quote[rand]);
+  });
+};
+
+exports.randommodern = (req, res) => {
+  Quote.find({ category: 'Modern' }, (err, quote) => {
+    const rand = Math.floor(Math.random() * quote.length);
+    res.status(200).json(quote[rand]);
+  });
 };

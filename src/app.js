@@ -39,4 +39,10 @@ app.get('/quotes/entrepreneurs', quoteControllers.entrepreneurs);
 
 app.get('/quotes/scientists', quoteControllers.scientists);
 
+app.get('/quotes/ancient/random', quoteControllers.randomancient);
+
+app.get('/quotes/enlightenment/random', quoteControllers.randomenlightenment);
+
+app.get('/quotes/modern/random', quoteControllers.randommodern);
+
 module.exports = app;
