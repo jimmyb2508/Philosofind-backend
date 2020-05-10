@@ -148,8 +148,6 @@ describe('/quotes', () => {
 
             res.body.forEach(quote => {
               const expected = quotes.find(a => a.category === quote.category);
-              // expect(quote.quote).toBe(expected.quote);
-              // expect(quote.author).toBe(expected.author);
               expect(quote.category).toBe(expected.category);
             });
             done();
@@ -193,8 +191,6 @@ describe('/quotes', () => {
 
             res.body.forEach(quote => {
               const expected = quotes.find(a => a.category === quote.category);
-              // expect(quote.quote).toBe(expected.quote);
-              // expect(quote.author).toBe(expected.author);
               expect(quote.category).toBe(expected.category);
             });
             done();
@@ -238,8 +234,6 @@ describe('/quotes', () => {
 
             res.body.forEach(quote => {
               const expected = quotes.find(a => a.category === quote.category);
-              // expect(quote.quote).toBe(expected.quote);
-              // expect(quote.author).toBe(expected.author);
               expect(quote.category).toBe(expected.category);
             });
             done();
@@ -283,8 +277,6 @@ describe('/quotes', () => {
 
             res.body.forEach(quote => {
               const expected = quotes.find(a => a.category === quote.category);
-              // expect(quote.quote).toBe(expected.quote);
-              // expect(quote.author).toBe(expected.author);
               expect(quote.category).toBe(expected.category);
             });
             done();
@@ -329,8 +321,6 @@ describe('/quotes', () => {
 
             res.body.forEach(quote => {
               const expected = quotes.find(a => a.category === quote.category);
-              // expect(quote.quote).toBe(expected.quote);
-              // expect(quote.author).toBe(expected.author);
               expect(quote.category).toBe(expected.category);
             });
             done();
@@ -374,8 +364,6 @@ describe('/quotes', () => {
 
             res.body.forEach(quote => {
               const expected = quotes.find(a => a.category === quote.category);
-              // expect(quote.quote).toBe(expected.quote);
-              // expect(quote.author).toBe(expected.author);
               expect(quote.category).toBe(expected.category);
             });
             done();
@@ -410,11 +398,210 @@ describe('/quotes', () => {
     });
 
     describe('GET /quotes/ancient/random', () => {
-      it('gets all ancient quotes', done => {
+      it('gets a random ancient quote', done => {
         request(app)
           .get('/quotes/ancient/random')
           .then(res => {
             expect(res.body).toBeInstanceOf(Object);
+            expect(res.body.category).toEqual('Ancient');
+            done();
+          });
+      });
+    });
+  });
+
+  describe('gets a random enlightenment quote from the database', () => {
+    let quotes;
+    beforeEach(done => {
+      Promise.all([
+        Quote.create({
+          quote: 'What wisdom can you find that is greater than kindness?',
+          author: 'Jean-Jacques Rousseau',
+          category: 'Enlightenment',
+        }),
+        Quote.create({
+          quote: 'I would never die for my beliefs because I might be wrong',
+          author: 'Bertrand Russell',
+          category: 'Modern',
+        }),
+        Quote.create({
+          quote: 'All wealth is the product of labor.',
+          author: 'John Locke',
+          category: 'Enlightenment',
+        }),
+      ]).then(documents => {
+        quotes = documents;
+        done();
+      });
+    });
+
+    describe('GET /quotes/enlightenment/random', () => {
+      it('gets a random enlightenment quote', done => {
+        request(app)
+          .get('/quotes/enlightenment/random')
+          .then(res => {
+            expect(res.status).toBe(200);
+            expect(res.body).toBeInstanceOf(Object);
+            expect(res.body.category).toEqual('Enlightenment');
+            done();
+          });
+      });
+    });
+  });
+
+  describe('gets a random modern quote from the database', () => {
+    let quotes;
+    beforeEach(done => {
+      Promise.all([
+        Quote.create({
+          quote:
+            'The whole problem with the world is that fools and fanatics are always so certain of themselves, and wiser people so full of doubts.',
+          author: 'Bertrand Russell',
+          category: 'Modern',
+        }),
+        Quote.create({
+          quote: 'A lie told often enough becomes the truth.',
+          author: 'Vladimir Lenin',
+          category: 'Modern',
+        }),
+        Quote.create({
+          quote: 'The duty of youth is to challenge corruption.',
+          author: 'Kurt Cobain',
+          category: 'Artists',
+        }),
+      ]).then(documents => {
+        quotes = documents;
+        done();
+      });
+    });
+
+    describe('GET /quotes/modern/random', () => {
+      it('gets a random modern quote', done => {
+        request(app)
+          .get('/quotes/modern/random')
+          .then(res => {
+            expect(res.status).toBe(200);
+            expect(res.body).toBeInstanceOf(Object);
+            expect(res.body.category).toEqual('Modern');
+            done();
+          });
+      });
+    });
+  });
+
+  describe('gets a random artists quote from the database', () => {
+    let quotes;
+    beforeEach(done => {
+      Promise.all([
+        Quote.create({
+          quote: 'Practise what you know, and it will help to make clear what now you do not know.',
+          author: 'Rembrandt Van Rijn',
+          category: 'Artists',
+        }),
+        Quote.create({
+          quote: 'Everything you can imagine is real.',
+          author: 'Pablo Picasso',
+          category: 'Artists',
+        }),
+        Quote.create({
+          quote:
+            'Perhaps it is good to have a beautiful mind, but an even greater gift is to discover a beautiful heart!',
+          author: 'John Nash',
+          category: 'Scientists',
+        }),
+      ]).then(documents => {
+        quotes = documents;
+        done();
+      });
+    });
+
+    describe('GET /quotes/artists/random', () => {
+      it('gets a random artists quote', done => {
+        request(app)
+          .get('/quotes/artists/random')
+          .then(res => {
+            expect(res.status).toBe(200);
+            expect(res.body).toBeInstanceOf(Object);
+            expect(res.body.category).toEqual('Artists');
+            done();
+          });
+      });
+    });
+  });
+
+  describe('gets a random entrepreneurs quote from the database', () => {
+    let quotes;
+    beforeEach(done => {
+      Promise.all([
+        Quote.create({
+          quote: 'The Internet is becoming the town square for the global village of tomorrow.',
+          author: 'Bill Gates',
+          category: 'Entrepreneurs',
+        }),
+        Quote.create({
+          quote: `Love is when the other person's happiness is more important than your own.`,
+          author: 'Kylie Jenner',
+          category: 'Entrepreneurs',
+        }),
+        Quote.create({
+          quote: 'The two most powerful warriors are patience and time.',
+          author: 'Leo Tolstoy',
+          category: 'Artists',
+        }),
+      ]).then(documents => {
+        quotes = documents;
+        done();
+      });
+    });
+
+    describe('GET /quotes/entrepreneurs/random', () => {
+      it('gets a random entrepreneurs quote', done => {
+        request(app)
+          .get('/quotes/entrepreneurs/random')
+          .then(res => {
+            expect(res.status).toBe(200);
+            expect(res.body).toBeInstanceOf(Object);
+            expect(res.body.category).toEqual('Entrepreneurs');
+            done();
+          });
+      });
+    });
+  });
+
+  describe('gets a random scientists quote from the database', () => {
+    let quotes;
+    beforeEach(done => {
+      Promise.all([
+        Quote.create({
+          quote: `We're made of star stuff. We are a way for the cosmos to know itself.`,
+          author: 'Carl Sagan',
+          category: 'Scientists',
+        }),
+        Quote.create({
+          quote: `For small creatures such as we the vastness is bearable only through love.`,
+          author: 'Carl Sagan',
+          category: 'Scientists',
+        }),
+        Quote.create({
+          quote:
+            'If the doors of perception were cleansed everything would appear to man as it is, infinite.',
+          author: 'William Blake',
+          category: 'Artists',
+        }),
+      ]).then(documents => {
+        quotes = documents;
+        done();
+      });
+    });
+
+    describe('GET /quotes/scientists/random', () => {
+      it('gets a random scientists quote', done => {
+        request(app)
+          .get('/quotes/scientists/random')
+          .then(res => {
+            expect(res.status).toBe(200);
+            expect(res.body).toBeInstanceOf(Object);
+            expect(res.body.category).toEqual('Scientists');
             done();
           });
       });
