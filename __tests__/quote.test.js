@@ -607,4 +607,59 @@ describe('/quotes', () => {
       });
     });
   });
+
+  describe('gets all the quotes for a given author', () => {
+    let quotes;
+    beforeEach(done => {
+      Promise.all([
+        Quote.create({
+          quote: `Each problem that I solved became a rule, which served afterwards to solve other problems`,
+          author: 'Renee Descartes',
+          category: 'Enlightenment',
+        }),
+        Quote.create({
+          quote: `Science knows no country, because knowledge belongs to humanity, and is the torch which illuminates the world`,
+          author: 'Louis Pasteur',
+          category: 'Scientists',
+        }),
+        Quote.create({
+          quote: `Most people say that it is intellect which makes a great scientist. They are wrong: it is character`,
+          author: 'Albert Einstein',
+          category: 'Scientists',
+        }),
+        Quote.create({
+          quote: `To raise new questions, new possibilities, to regard old problems from a new angle, requires creative imagination and marks real advance in science`,
+          author: 'Albert Einstein',
+          category: 'Scientists',
+        }),
+        Quote.create({
+          quote: `Science never solves a problem without creating ten more`,
+          author: 'George Bernard Shaw',
+          category: 'Artists',
+        }),
+        Quote.create({
+          quote: 'It is greed to do all the talking but not to want to listen at all',
+          author: 'Democritus',
+          category: 'Ancient',
+        }),
+      ]).then(documents => {
+        quotes = documents;
+        done();
+      });
+    });
+
+    describe('GET /quotes/author', () => {
+      it('gets all quotes for specified author', done => {
+        request(app)
+          .get(`/quotes/author`)
+          .then(res => {
+            console.log(res);
+            console.log(res.status);
+            console.log(res.body);
+            expect(res.status).toBe(200);
+            expect(res.body).toBeInstanceOf(Object);
+          });
+      });
+    });
+  });
 });

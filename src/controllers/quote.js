@@ -175,3 +175,15 @@ exports.randomscientists = (req, res) => {
     res.status(200).json(quote[rand]);
   });
 };
+
+/* Gets all the quotes from an author */
+
+exports.author = (req, res) => {
+  Quote.find({ author: req.params.author }, (err, quote) => {
+    if (!quote) {
+      res.status(404).json({ error: 'The quote could not be found..' });
+    } else {
+      res.status(200).json(quote);
+    }
+  });
+};

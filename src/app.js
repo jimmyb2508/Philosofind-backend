@@ -17,15 +17,15 @@ app.use((req, res, next) => {
 
 app.post('/quotes', quoteControllers.create);
 
+app.patch('/quotes/:quoteId', quoteControllers.patch);
+
+app.delete('/quotes/:quoteId', quoteControllers.delete);
+
 app.get('/quotes', quoteControllers.list);
 
 app.get('/quotes/random', quoteControllers.random);
 
 // app.get('/quotes/:quoteId', quoteControllers.find);
-
-app.patch('/quotes/:quoteId', quoteControllers.patch);
-
-app.delete('/quotes/:quoteId', quoteControllers.delete);
 
 app.get('/quotes/ancient', quoteControllers.ancient);
 
@@ -50,5 +50,7 @@ app.get('/quotes/artists/random', quoteControllers.randomartists);
 app.get('/quotes/entrepreneurs/random', quoteControllers.randomentrepreneurs);
 
 app.get('/quotes/scientists/random', quoteControllers.randomscientists);
+
+app.get('/quotes/:author', quoteControllers.author);
 
 module.exports = app;
