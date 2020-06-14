@@ -43,18 +43,13 @@ exports.find = (req, res) => {
 };
 
 exports.patch = (req, res) => {
-  Quote.findOne({ _id: req.params.quoteId }, (err, quote) => {
+  Quote.findById({ _id: req.params.quoteId }, (err, quote) => {
     if (!quote) {
       res.status(404).json({ error: 'The author could not be found!' });
     } else {
-      if (req.body.quote) {
-        quote.set({ name: req.body.quote });
-      }
-      if (req.body.author) {
-        quote.set({ author: req.body.author });
-      }
-      quote.save().then(() => {
-        res.status(200).json(quote);
+      quote.set(req.body);
+      quote.save().then(updatedQuote => {
+        res.status(200).json(updatedQuote);
       });
     }
   });
